@@ -1,0 +1,65 @@
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function einlesen() {
+    rl.question("Gib hier bitte die Anzahl der Spieler an: ", (input) => {
+        let Anzahl = input.replace(/[^0-9]/g, '');
+        if (Anzahl === '') {
+            console.log("Bitte eine gültige Zahl eingeben.");
+            rl.close();
+            return;
+        }
+
+        let Spieler = [];
+        const readNames = (count) => {
+            if (count > 0) {
+                rl.question(`Bitte den Namen des Spielers ${Anzahl - count + 1} eingeben: `, (name) => {
+                    Spieler.push(name);
+                    readNames(count - 1);
+                });
+            } else {
+                console.log(`Anzahl der Spieler: ${Anzahl}`);
+                console.log("Spielernamen: ", Spieler);
+                Aufgabenauswahl(Spieler);
+                rl.close();
+            }
+        };
+
+        readNames(Number(Anzahl));
+    });
+}
+
+function Aufgabenauswahl(Spieler) {
+    let Spielermix = Spieler.sort(() => Math.random() - 0.5);
+    console.log("Spieler: ", Spielermix);
+    interfaceRunde(Spielermix);
+}
+
+function interfaceRunde(Spieler) {
+    const Aufgaben = [
+        "muss für die nächsten 3 Runden wie ein Pirat/Alien/Superheld sprechen und trinken, wenn er/sie es vergisst.",
+        "Alle, die heute bunte Socken/Jeans/T-Shirt mit Aufdruck/Hut/Kette tragen, trinken 1-2-mal und machen eine lustige Pose oder erklären den Aufdruck.",
+        "Alle, die heute eine Uhr tragen, trinken 1-mal.",
+        "muss ein Tiergeräusch nachmachen und trinken, wenn jemand errät, welches Tier es ist. Bonuspunkte für besonders kreative Geräusche!",
+        "muss für die nächsten 5 Minuten wie ein Dinosaurier brüllen/ein Huhn gackern.",
+        "muss einen lustigen Tanz aufführen und trinken, wenn jemand lacht.",
+        "muss ein Lied summen/singen und trinken, wenn er/sie die Wörter vergisst.",
+        "muss für die nächsten 3 Runden nur mit einem Strohhalm/Löffel trinken.",
+        "muss für die nächsten 5 Minuten nur mit der linken Hand trinken.",
+        "muss für die nächsten 3 Runden nur mit geschlossenen Augen trinken.",
+        "und ein anderer Spieler müssen ihre Plätze/Getränke tauschen und trinken.",
+        "und ein anderer Spieler müssen ihre Plätze tauschen und dabei wie Roboter gehen und sprechen.",
+        "muss einen Witz erzählen und trinken, wenn niemand lacht.",
+        "muss eine lustige Geschichte erzählen und trinken, wenn jemand unterbricht.",
+        "muss für die nächsten 5 Minuten nur mit einem Löffel trinken und dabei wie ein Dinosaurier brüllen."
+    ];
+
+    Spieler.forEach((spieler, index) => {
+        console.log(`[Spieler ${spieler}] ${Aufgaben[index % Aufgaben.length]}`);
+    });
+}
+
+einlesen();
